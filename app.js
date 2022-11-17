@@ -24,7 +24,13 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
-usePassport(app) // 載入Passport 設定檔，寫在路由之前
+usePassport(app) // 載入Passport 設定檔
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
 
 app.use(routes)
 
